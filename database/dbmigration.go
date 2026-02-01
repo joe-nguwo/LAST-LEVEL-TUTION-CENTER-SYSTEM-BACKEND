@@ -11,6 +11,7 @@ func MigrateDb(db *gorm.DB) error {
 	err := db.AutoMigrate(
 		&m.Admin{},
 		
+		
 	)
 
 	

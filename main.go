@@ -4,6 +4,8 @@ import(
 	"github.com/labstack/echo/v4"
 	"log"
 	"last-level/database"
+	"last-level/handlers/auth"
+
 
 	"github.com/joho/godotenv"
 )
@@ -25,6 +27,9 @@ func main(){
 
 		return c.String(200, "Admin endpoint")
 	})
+
+	e.GET("/admin/login/:id",handlers.AdminHandler)
+	e.GET("/Query",handlers.Show)
 
 
 	log.Println(e.Start(":8080"))
