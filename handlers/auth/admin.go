@@ -8,15 +8,15 @@ import (
 
 
 func AdminHandler (c echo.Context) error {
-	id := c.Param("id")
+	email := c.FormValue("email")
+	name := c.FormValue("name")
 
-	return c.String(http.StatusOK," you id is " + id)
+	if email == "nguwojoe@gmail.com"  && name == "Joe Nguwo" {
+		return c.JSON(http.StatusOK, map[string]string{"message": "Admin login successful", "id": "1"})
+	}
+
+    return c.JSON(http.StatusOK, map[string]string{"message": "Admin login successful", "id": name})
 
 }
 
-func Show(c echo.Context) error {
-	// Get team and member from the query string
-	team := c.QueryParam("team")
-	member := c.QueryParam("member")
-	return c.String(http.StatusOK, "team:" + team + ", member:" + member)
-}
+

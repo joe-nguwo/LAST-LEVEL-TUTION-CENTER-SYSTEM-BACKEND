@@ -25,11 +25,11 @@ func main(){
 
 	e.GET("/admin", func(c echo.Context) error {
 
-		return c.String(200, "Admin endpoint")
+		return c.JSON(200, map[string]string{"message": "Admin endpoint"})
+		
 	})
 
-	e.GET("/admin/login/:id",handlers.AdminHandler)
-	e.GET("/Query",handlers.Show)
+	e.POST("/api/v1/admin/auth/login",handlers.AdminHandler)
 
 
 	log.Println(e.Start(":8080"))
