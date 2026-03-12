@@ -1,19 +1,19 @@
 package main
 
-import(
+import (
 	"github.com/labstack/echo/v4"
-	"log"
-	"last-level/database"
-	"last-level/handlers/auth"
-
-
 	"github.com/joho/godotenv"
+	"last-level/database"
+	_"last-level/handlers/auth"
+	"log"
+	"last-level/routes"
+
+	
 )
 
+func main() {
 
-func main(){
-
-	e :=  echo.New()
+	e := echo.New()
 
 	_ = godotenv.Load()
 
@@ -23,15 +23,8 @@ func main(){
 	}
 	database.MigrateDb(db)
 
-	e.GET("/admin", func(c echo.Context) error {
+	routes.AdminRoutes(e)
 
-		return c.JSON(200, map[string]string{"message": "Admin endpoint"})
-		
-	})
-
-	e.POST("/api/v1/admin/auth/login",handlers.AdminHandler)
-
-
-	log.Println(e.Start(":8080"))
+	log.Println(e.Start(":3000"))
 
 }
