@@ -7,6 +7,7 @@ import (
 	_"last-level/handlers/auth"
 	"log"
 	"last-level/routes"
+	"last-level/middleware"
 
 	
 )
@@ -22,6 +23,8 @@ func main() {
 		log.Fatalf("Could not connect to database: %v", err)
 	}
 	database.MigrateDb(db)
+	e.Use(middleware.RequestTime)
+
 
 	routes.AdminRoutes(e)
 
