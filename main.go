@@ -1,15 +1,14 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
 	"github.com/joho/godotenv"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"last-level/database"
-	_"last-level/handlers/auth"
-	"log"
+	_ "last-level/handlers/auth"
 	"last-level/routes"
-	"last-level/middleware"
-
-	
+	"log"
+	//mid "last-level/middleware"
 )
 
 func main() {
@@ -22,9 +21,23 @@ func main() {
 	if err != nil {
 		log.Fatalf("Could not connect to database: %v", err)
 	}
+	origins := []string{
+		"http://localhost:3000",
+		"http://localhost:5173",
+		"http://localhost:5174",
+		"http://localhost:8081",
+	}
 	database.MigrateDb(db)
-	e.Use(middleware.RequestTime)
+	
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins:     origins,
+		AllowMethods:     []string{echo.GET, echo.PUT, echo.POST, echo.DELETE, echo.OPTIONS, echo.PATCH},
+		AllowHeaders:     []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization, echo.HeaderXRequestedWith},
+		AllowCredentials: true,
+		MaxAge:           86400, // 24 hours for preflight cache
+	}))
 
+	//e.Use(mid.RequestTime)
 
 	routes.AdminRoutes(e)
 
