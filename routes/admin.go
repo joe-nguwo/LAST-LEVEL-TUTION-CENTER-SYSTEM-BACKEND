@@ -9,8 +9,8 @@ import (
 func AdminRoutes(e *echo.Echo) {
 
 api := e.Group("/api/v1/admin")
-api.POST("/auth/login",handlers.AdminHandler)
-api.POST("/auth/logout",handlers.AdminHandler)
-api.POST("/auth/register",handlers.AdminHandler)
+api.POST("/auth/login",handlers.Login)
+api.POST("/auth/logout",handlers.Logout)
+api.POST("/auth/register",handlers.Register)
 
 }

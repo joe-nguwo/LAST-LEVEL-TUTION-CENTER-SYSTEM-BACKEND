@@ -3,9 +3,10 @@ package models
 
 
 type Admin struct {
-	Password  int `json:"password"`
-	Id        int     `json:"id"`
-	Name      string `json:"name"`
+	Password  string  `json:"password"`
+	//Id        string    `json:"id"`
+	FName      string `json:"fname"`
+	LName      string `json:"lname"`
 	Email     string `json:"email"`
 
 }

@@ -7,6 +7,7 @@ import (
 	"last-level/database"
 	_ "last-level/handlers/auth"
 	"last-level/routes"
+
 	"log"
 	//mid "last-level/middleware"
 )
@@ -37,7 +38,7 @@ func main() {
 		MaxAge:           86400, // 24 hours for preflight cache
 	}))
 
-	//e.Use(mid.RequestTime)
+	//e.Use(mid.RequestTime) 
 
 	routes.AdminRoutes(e)
 
