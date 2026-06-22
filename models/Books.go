@@ -1,14 +1,15 @@
 package models
 
 import (
-	_"gorm.io/gorm"
+	"gorm.io/gorm"
 )
 
 type Books struct{
-
-	Name string
-	Author string
-	Genre string
+	gorm.Model
+	Name string `json:"name"` 
+	Author string `json:"author"`
+	Genre string `json:"genre"`
+	
 
 
 }

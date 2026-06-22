@@ -56,6 +56,7 @@ func Register(c echo.Context) error {
 
 		return c.JSON(http.StatusInternalServerError, map[string]string{
 			"message": "database error",
+		
 		})
 	}
 
@@ -64,12 +65,14 @@ func Register(c echo.Context) error {
 	if result.Error != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"message": "failed to create user",
+			
 		})
 	}
 
 	return c.JSON(http.StatusCreated, map[string]string{
 		"message": "created user",
-	})
+			
+})
 }
 func Logout(c echo.Context) error {
 	return c.JSON(http.StatusAccepted, map[string]string{"message": "logout "})
