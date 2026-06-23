@@ -39,7 +39,7 @@ func Login(c echo.Context) error {
 
 func Register(c echo.Context) error {
 	fname := c.FormValue("firstName")
-	lname := c.FormValue("lastName") // fixed typo
+	lname := c.FormValue("lastName") 
 	password := c.FormValue("password")
 	email := c.FormValue("email")
 

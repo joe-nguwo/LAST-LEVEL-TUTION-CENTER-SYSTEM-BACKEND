@@ -12,5 +12,6 @@ api := e.Group("/api/v1/admin")
 api.POST("/auth/login",handlers.Login)
 api.POST("/auth/logout",handlers.Logout)
 api.POST("/auth/register",handlers.Register)
-
+// Dashbaord Statitics 
+api.GET("/auth/dashStats",handlers.StudentsStats)
 }

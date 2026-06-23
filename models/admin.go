@@ -7,7 +7,7 @@ type Admin struct {
 	gorm.Model
 	Password  string  `json:"password" gorm:"primaryKey"`
 	FName      string `json:"fname"`
-	LName      string `json:"lname" gorm:"unique"`
-	Email     string `json:"email"`
+	LName      string `json:"lname"`
+	Email     string `json:"email"  gorm:"unique"`
 
 }
