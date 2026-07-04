@@ -42,6 +42,6 @@ func main() {
 
 	routes.AdminRoutes(e)
 
-	log.Println(e.Start(":3000"))
+	log.Println(e.Start(":8000"))
 
 }

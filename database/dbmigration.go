@@ -8,12 +8,17 @@ import (
 )
 
 func MigrateDb(db *gorm.DB) error {
-	err := db.AutoMigrate(
-		&m.Admin{},
-		&m.Books{},
-		&m.Students{},		
-	)
+// 	db.Migrator().DropTable(
+//     &m.Admin{},
+//     &m.Books{},
+//     &m.Students{},
+// )
 
+err := db.AutoMigrate(
+    &m.Admin{},
+    &m.Books{},
+    &m.Students{},
+)
 	if err != nil {
 		return fmt.Errorf("error during migration: %w", err)
 	}
