@@ -8,7 +8,7 @@ import (
 )
 
 func MigrateDb(db *gorm.DB) error {
-// 	db.Migrator().DropTable(
+// 	err := db.Migrator().DropTable(
 //     &m.Admin{},
 //     &m.Books{},
 //     &m.Students{},

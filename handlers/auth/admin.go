@@ -8,11 +8,13 @@ import (
 
 	_ "github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func Login(c echo.Context) error {
 	email := c.FormValue("email")
 	password := c.FormValue("password")
+	
 
 	user := models.Admin{}
 
@@ -24,9 +26,16 @@ func Login(c echo.Context) error {
 		})
 	}
 
-	result := db.Where("email = ? AND password = ?", email, password).First(&user)
-
+	result := db.Where("email = ?", email).First(&user)
 	if result.Error != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"message": "invalid credentials",
+		})
+	}
+
+	
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"message": "invalid credentials",
 		})
@@ -39,12 +48,20 @@ func Login(c echo.Context) error {
 
 func Register(c echo.Context) error {
 	fname := c.FormValue("firstName")
-	lname := c.FormValue("lastName") 
+	lname := c.FormValue("lastName")
 	password := c.FormValue("password")
 	email := c.FormValue("email")
+	
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"message": "error hashing password",
+		})
+	}
 
 	register := models.Admin{
-		Password: password,
+		Password: string(hashedPassword),
 		FName:    fname,
 		LName:    lname,
 		Email:    email,
@@ -53,28 +70,25 @@ func Register(c echo.Context) error {
 	db, err := database.ConnectDB()
 	if err != nil {
 		fmt.Println("failed to connect to the database")
-
 		return c.JSON(http.StatusInternalServerError, map[string]string{
 			"message": "database error",
-		
 		})
 	}
 
 	result := db.Create(&register)
-
 	if result.Error != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"message": "failed to create user",
-			
 		})
 	}
 
 	return c.JSON(http.StatusCreated, map[string]string{
 		"message": "created user",
-			
-})
-}
-func Logout(c echo.Context) error {
-	return c.JSON(http.StatusAccepted, map[string]string{"message": "logout "})
+	})
 }
 
+func Logout(c echo.Context) error {
+	return c.JSON(http.StatusAccepted, map[string]string{
+		"message": "logout",
+	})
+}
