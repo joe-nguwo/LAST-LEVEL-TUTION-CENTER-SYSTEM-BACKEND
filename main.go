@@ -37,6 +37,7 @@ func main() {
 		AllowCredentials: true,
 		MaxAge:           86400, // 24 hours for preflight cache
 	}))
+	e.Use(middleware.Logger())
 
 	//e.Use(mid.RequestTime) 
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"last-level/database"
 	"last-level/models"
+	"last-level/types"
 	"net/http"
 
 	_ "github.com/golang-jwt/jwt/v5"
@@ -11,10 +12,15 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+
 func Login(c echo.Context) error {
-	email := c.FormValue("email")
-	password := c.FormValue("password")
-	
+	var req types.LoginRequest
+
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"message": "invalid request body",
+		})
+	}
 
 	user := models.Admin{}
 
@@ -26,15 +32,14 @@ func Login(c echo.Context) error {
 		})
 	}
 
-	result := db.Where("email = ?", email).First(&user)
+	result := db.Where("email = ?", req.Email).First(&user)
 	if result.Error != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"message": "invalid credentials",
 		})
 	}
 
-	
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"message": "invalid credentials",
@@ -47,13 +52,15 @@ func Login(c echo.Context) error {
 }
 
 func Register(c echo.Context) error {
-	fname := c.FormValue("firstName")
-	lname := c.FormValue("lastName")
-	password := c.FormValue("password")
-	email := c.FormValue("email")
-	
+	var req types.RegisterRequest
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"message": "invalid request body",
+		})
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{
 			"message": "error hashing password",
@@ -61,10 +68,10 @@ func Register(c echo.Context) error {
 	}
 
 	register := models.Admin{
+		FName:    req.FirstName,
+		LName:    req.LastName,
+		Email:    req.Email,
 		Password: string(hashedPassword),
-		FName:    fname,
-		LName:    lname,
-		Email:    email,
 	}
 
 	db, err := database.ConnectDB()
