@@ -13,7 +13,6 @@ import (
 func RegisterStudent(c echo.Context) error {
 	var req types.RegisterStudentRequest
 
-	// Bind JSON request to struct
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"message": "invalid request body",
@@ -47,3 +46,4 @@ func RegisterStudent(c echo.Context) error {
 		"student": student,
 	})
 }
+
