@@ -16,4 +16,5 @@ api.POST("/auth/register",handlers.Register)
 api.GET("/auth/dashStats",handlers.StudentsStats)
 // students
 api.POST("/auth/student",handlers.RegisterStudent)
+api.GET("/auth/student",handlers.AllStudents)
 }

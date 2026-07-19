@@ -47,3 +47,27 @@ func RegisterStudent(c echo.Context) error {
 	})
 }
 
+func AllStudents(c echo.Context) error{
+	db,err := database.ConnectDB()
+
+	if err != nil{
+		return c.JSON(http.StatusInternalServerError,map[string]string{
+			"message":"cant connect to the database",
+		})
+	}
+	
+
+	var students []models.Students
+	if err := db.Find(&students).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"message": "failed to fetch students",
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]any{
+		"message":"ok",
+		"students": students,
+	})
+
+}
+
