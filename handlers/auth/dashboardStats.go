@@ -24,6 +24,7 @@ func StudentsStats(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, map[string]any{
-		"total_students": total,
+		"message":"ok",
+		"data": total,
 	})
 }

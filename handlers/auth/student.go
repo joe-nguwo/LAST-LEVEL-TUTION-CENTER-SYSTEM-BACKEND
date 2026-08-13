@@ -66,8 +66,33 @@ func AllStudents(c echo.Context) error{
 
 	return c.JSON(http.StatusOK, map[string]any{
 		"message":"ok",
-		"students": students,
+		"data": students,
 	})
+
+}
+
+func DeleteStudent(c echo.Context) error {
+	db,err := database.ConnectDB()
+	var req types.DeleteStudent
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"message": "invalid request body",
+		})
+	}
+
+	if err != nil{
+		return  c.JSON(http.StatusInternalServerError,map[string]string{
+			"message":"database connection failed",
+		})
+
+	}
+	id := c.Param("id")
+	db.Delete(id)
+	return c.JSON(http.StatusNoContent,map[string]string{
+		"message":"deletion succefull",
+	})
+	
+	
 
 }
 

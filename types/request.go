@@ -20,3 +20,9 @@ type RegisterStudentRequest struct {
 	Contact    string `json:"contact"`
 	Address    string `json:"address"`
 }
+
+type DeleteStudent struct {
+	Id string  `param:"ID"`
+	
+}
+
