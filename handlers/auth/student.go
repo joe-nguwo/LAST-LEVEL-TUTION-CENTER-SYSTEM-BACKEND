@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"last-level/database"
@@ -50,6 +51,7 @@ func RegisterStudent(c echo.Context) error {
 func AllStudents(c echo.Context) error{
 	db,err := database.ConnectDB()
 
+
 	if err != nil{
 		return c.JSON(http.StatusInternalServerError,map[string]string{
 			"message":"cant connect to the database",
@@ -73,6 +75,7 @@ func AllStudents(c echo.Context) error{
 
 func DeleteStudent(c echo.Context) error {
 	db,err := database.ConnectDB()
+	users := models.Students{}
 	var req types.DeleteStudent
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
@@ -87,10 +90,18 @@ func DeleteStudent(c echo.Context) error {
 
 	}
 	id := c.Param("id")
-	db.Delete(id)
-	return c.JSON(http.StatusNoContent,map[string]string{
-		"message":"deletion succefull",
-	})
+	fmt.Println("this is the id",id)
+	results := db.Delete(&users,id)
+	if(results.RowsAffected > 0){
+		fmt.Println("delete succefull")
+	}else{
+			fmt.Println(results.Error,"error occures while deleting")
+
+	}
+	
+
+
+return c.NoContent(http.StatusNoContent)
 	
 	
 

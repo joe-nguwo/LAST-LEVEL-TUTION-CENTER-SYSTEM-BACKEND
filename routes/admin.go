@@ -17,4 +17,5 @@ api.GET("/auth/dashStats",handlers.StudentsStats)
 // students
 api.POST("/auth/student",handlers.RegisterStudent)
 api.GET("/auth/student",handlers.AllStudents)
+api.DELETE("/auth/student/:id",handlers.DeleteStudent)
 }

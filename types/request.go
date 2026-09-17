@@ -22,7 +22,7 @@ type RegisterStudentRequest struct {
 }
 
 type DeleteStudent struct {
-	Id string  `param:"ID"`
+	ID string  `param:"ID"`
 	
 }
 
